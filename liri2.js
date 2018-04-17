@@ -157,7 +157,12 @@ switch (action) {
         break;
     }
 
-    case "help": {
+    case "do-what-it-says": {
+        get_do_what();
+        break;
+    }
+
+    default: {
         console.log("\n");
         console.log("LIRI Help");
         console.log("This is LIRI.  LIRI replies with information based on your input.");
