@@ -1,0 +1,4 @@
+{"cmd":"spotify-this-song","info":"i will always love you"},
+{"cmd":"movie-this","info":"star wars"},
+{"cmd":"movie-this","info":"black panther"},
+{"cmd":"my-tweets","info":""}
