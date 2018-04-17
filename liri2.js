@@ -44,7 +44,9 @@ function get_tweets() {
         if (!error) {
             console.log("\n");
             console.log("Tweets")
-            for (i = 0; i < tweets.length; i++) { console.log(tweets[i].text); }
+            for (i = 0; i < tweets.length; i++){
+                console.log(tweets[i].text +"   "+tweets[i].created_at);
+            }
             console.log("\n");
             save_trans("my-tweets", "");
         }
@@ -110,13 +112,13 @@ function get_omdb(mov_tit) {
     request('http://www.omdbapi.com/?apikey=' + mov_key + '&t=' + mov_tit, function (error, response, body) {
         if (error) {
             console.log("\n");
-            console.log('error:', error); // Print the error if one occurred
-            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+            console.log('error:', error);
+            console.log('statusCode:', response && response.statusCode); 
             console.log("\n");
         }
         else {
             console.log("\n");
-            console.log(JSON.parse(body).Title); // Print the HTML for the Google homepage.
+            console.log(JSON.parse(body).Title); 
             console.log(JSON.parse(body).Year);
             console.log(JSON.parse(body).imdbRating);
             if (JSON.parse(body).Ratings[0].Value == undefined) {
@@ -135,43 +137,62 @@ function get_omdb(mov_tit) {
     });
 }
 
+function get_do_what() {
+    info_f.readFile('./random.txt','utf8', function (err,data) {
+        if (err) throw err;
+        var data_arr = JSON.parse(data);
 
-setup();
+        var ind = Math.floor(Math.random() * data_arr.length);
+        var command = data_arr[ind].cmd;
+        var information = data_arr[ind].info;
 
-var action = process.argv[2];
-var item = process.argv[3];
+        start_up(command, information);
+    });
 
-switch (action) {
-    case "my-tweets": {
-        get_tweets();
-        break;
-    }
+}
 
-    case "spotify-this-song": {
-        get_spot(item);
-        break;
-    }
+function start_up(action,item) {
 
-    case "movie-this": {
-        get_omdb(item);
-        break;
-    }
+    switch (action) {
+        case "my-tweets": {
+            get_tweets();
+            break;
+        }
 
-    case "do-what-it-says": {
-        get_do_what();
-        break;
-    }
+        case "spotify-this-song": {
+            get_spot(item);
+            break;
+        }
 
-    default: {
-        console.log("\n");
-        console.log("LIRI Help");
-        console.log("This is LIRI.  LIRI replies with information based on your input.");
-        console.log("node liri.js my-tweets returns 20 (or whatever is available) most recent tweets.");
-        console.log("node liri.js spotify-this-song songname returns information about the song. Optionally add the artist's name.");
-        console.log("node liri.js movie-this movie name returns information about the movie.");
-        console.log("node liri.js do-what-it-says performs a random function and returns some data.");
-        console.log("\n");
-        break;
+        case "movie-this": {
+            get_omdb(item);
+            break;
+        }
+
+        case "do-what-it-says": {
+            get_do_what();
+            break;
+        }
+
+        default: {
+            console.log("\n");
+            console.log("LIRI Help");
+            console.log("This is LIRI.  LIRI replies with information based on your input.");
+            console.log("node liri.js my-tweets returns 20 (or whatever is available) most recent tweets.");
+            console.log("node liri.js spotify-this-song songname returns information about the song. Optionally add the artist's name.");
+            console.log("node liri.js movie-this movie name returns information about the movie.");
+            console.log("node liri.js do-what-it-says performs a random function and returns some data.");
+            console.log("\n");
+            break;
+        }
+
     }
 
 }
+
+setup();
+
+var act = process.argv[2];
+var itm = process.argv[3];
+
+start_up(act,itm);
